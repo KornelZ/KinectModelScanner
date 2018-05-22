@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectModelScanner", "KinectModelScanner\KinectModelScanner.csproj", "{09302207-DE45-4A42-9319-CB34D7C91F54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09302207-DE45-4A42-9319-CB34D7C91F54}.Debug|x86.ActiveCfg = Debug|x86
+		{09302207-DE45-4A42-9319-CB34D7C91F54}.Debug|x86.Build.0 = Debug|x86
+		{09302207-DE45-4A42-9319-CB34D7C91F54}.Release|x86.ActiveCfg = Release|x86
+		{09302207-DE45-4A42-9319-CB34D7C91F54}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65B61FD1-C4CE-495D-9B1D-1C9B3E969EDC}
+	EndGlobalSection
+EndGlobal
