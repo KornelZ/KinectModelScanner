@@ -25,17 +25,17 @@ namespace KinectModelScanner
         {
             var depthStream = _kinect.KinectSensor.DepthStream;
             _view = Matrix.CreateLookAt(new Vector3(-10, 0, 0), Vector3.Zero, Vector3.Up);
-            _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(depthStream.NominalDiagonalFieldOfView), depthStream.FrameWidth / (float)depthStream.FrameHeight, 1, depthStream.TooFarDepth);
+            _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(depthStream.NominalVerticalFieldOfView), depthStream.FrameWidth / (float)depthStream.FrameHeight, 1, depthStream.TooFarDepth);
             DepthImagePixel[] depth = _kinect.Depth;
             foreach (MarkableVertex v in _model.Vertices)
             {
                 Matrix tempMatrix = _projection * _view * _model.World;
                 var ver = Vector3.Transform(v.Position, tempMatrix);
-                float currDistance = Math.Abs(Vector3.Transform(v.Position, _model.World).X - 10);
+                float currDistance = Math.Abs(Vector3.Transform(v.Position, _model.World).X + 10);
                 try
                 {
-                    var newDistance = depth[calculateIndex(ver.X, ver.Y)];
-                    if (currDistance < newDistance.Depth)
+                    var newDistance = Math.Abs(depth[calculateIndex(ver.X, ver.Y)].Depth);
+                    if (currDistance < newDistance)
                     {
                         v.Marked = true;
                     }
