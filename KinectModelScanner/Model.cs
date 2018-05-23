@@ -9,9 +9,19 @@ namespace KinectModelScanner
 {
     public class Model
     {
+        private const float RotationAmount = MathHelper.PiOver4 / 2;
+        private float _currentRotation = 0;
         public int VertexCountInLine { get; private set; }
         public List<MarkableVertex> Vertices { get; private set; }
         public List<int> Indices { get; private set; }
+        public Vector3 Center { get; private set; }
+
+        private Matrix _translation;
+        public Matrix Translation { get { return _translation; } }
+        private Matrix _rotation = Matrix.Identity;
+        public Matrix Rotation { get { return _rotation; } }
+
+        public Matrix World { get { return _translation * _rotation; } }
         
         public MarkableVertex this[int x, int y, int z]
         {
@@ -26,6 +36,10 @@ namespace KinectModelScanner
 
         public Model(int vertexCountInLine, float step)
         {
+            float translation = (vertexCountInLine * step - 1) / 2f;
+            Center = new Vector3(translation, translation, translation);
+            var modelTranslation = -Center;
+            Matrix.CreateTranslation(ref modelTranslation, out _translation);
             VertexCountInLine = vertexCountInLine;
             Vertices = new List<MarkableVertex>();
             for (int x = 0; x < vertexCountInLine; x++)
@@ -100,6 +114,21 @@ namespace KinectModelScanner
             {
                 triangles.Add(new Vector3[] { a.Position, b.Position, c.Position });
             }
+        }
+
+        public void Rotate(bool right)
+        {
+            float angle = RotationAmount;
+            if (right)
+            {
+                angle = -angle;
+            }
+            _currentRotation += angle;
+            if(_currentRotation == MathHelper.Pi * 2)
+            {
+                _currentRotation = 0;
+            }
+            _rotation = Matrix.CreateRotationY(_currentRotation);
         }
     }
 }

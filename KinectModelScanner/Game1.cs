@@ -20,12 +20,9 @@ namespace KinectModelScanner
         float _vertexStep;
         Model _model;
 
-        Matrix _world, _view, _projection;
+        Matrix _view, _projection;
         Vector3 _cameraPos;
         Vector3 _cameraTarget;
-        Vector3 _modelTranslation;
-        float _rotation = MathHelper.PiOver4 / 2;
-
 
         KeyboardState _oldKeyboardState;
         public Game1()
@@ -35,9 +32,6 @@ namespace KinectModelScanner
             _kinect = new Kinect();
             _vertexCountInLine = 4;
             _vertexStep = 1f;
-            float translation = -(_vertexCountInLine * _vertexStep - 1) / 2f;
-            _modelTranslation = new Vector3(translation, translation, translation);
-            Matrix.CreateTranslation(ref _modelTranslation, out _world);
             _cameraPos = new Vector3(-10, 0, 0);
             _cameraTarget = Vector3.Zero;
             _view = Matrix.CreateLookAt(_cameraPos, _cameraTarget, Vector3.Up);
@@ -126,27 +120,17 @@ namespace KinectModelScanner
             var keyboardState = Keyboard.GetState();
             if(keyboardState.IsKeyDown(Keys.Left) && _oldKeyboardState.IsKeyUp(Keys.Left))
             {
-                RotateCamera(left: true);
+                _model.Rotate(right: false);
             }
             else if(keyboardState.IsKeyDown(Keys.Right) && _oldKeyboardState.IsKeyUp(Keys.Right))
             {
-                RotateCamera(left: false);
+                _model.Rotate(right: true);
             }
             _oldKeyboardState = keyboardState;
             SetTrianglesToDraw();
             base.Update(gameTime);
         }
-        private void RotateCamera(bool left)
-        {
-            float angle = _rotation;
-            if(left)
-            {
-                angle = -angle;
-            }
-            _cameraPos = Vector3.Transform(_cameraPos - _cameraTarget, 
-                Matrix.CreateFromAxisAngle(new Vector3(0, 1, 0), angle));
-            _view = Matrix.CreateLookAt(_cameraPos, _cameraTarget, new Vector3(0, 1, 0));
-        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -156,7 +140,7 @@ namespace KinectModelScanner
             GraphicsDevice.Clear(Color.Black);
             BasicEffect e = new BasicEffect(GraphicsDevice)
             {
-                World = _world,
+                World = _model.World,
                 View = _view,
                 Projection = _projection,
                 VertexColorEnabled = true,
@@ -176,11 +160,6 @@ namespace KinectModelScanner
                 }
             }
             base.Draw(gameTime);
-        }
-
-        private Matrix GetWorldViewProjection()
-        {
-            return _projection * _view * _world;
         }
     }
 }
