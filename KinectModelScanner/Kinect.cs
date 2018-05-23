@@ -11,6 +11,7 @@ namespace KinectModelScanner
     {
         private KinectSensor _kinectSensor;
         public DepthImagePixel[] Depth { get; set; }
+        public KinectSensor KinectSensor { get { return _kinectSensor; } }
         public Kinect()
         {
             foreach(var sensor in KinectSensor.KinectSensors)

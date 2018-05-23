@@ -16,6 +16,7 @@ namespace KinectModelScanner
 
         List<VertexPositionColor> _toDraw = new List<VertexPositionColor>();
         Kinect _kinect;
+        ModelMapper _modelMapper;
         int _vertexCountInLine;
         float _vertexStep;
         Model _model;
@@ -48,6 +49,7 @@ namespace KinectModelScanner
         {
             // TODO: Add your initialization logic here
             InitModel();
+            _modelMapper = new ModelMapper(_kinect, ref _model);
             base.Initialize();
         }
 
@@ -121,10 +123,13 @@ namespace KinectModelScanner
             if(keyboardState.IsKeyDown(Keys.Left) && _oldKeyboardState.IsKeyUp(Keys.Left))
             {
                 _model.Rotate(right: false);
+                _modelMapper.Map();
+
             }
             else if(keyboardState.IsKeyDown(Keys.Right) && _oldKeyboardState.IsKeyUp(Keys.Right))
             {
                 _model.Rotate(right: true);
+                _modelMapper.Map();
             }
             _oldKeyboardState = keyboardState;
             SetTrianglesToDraw();

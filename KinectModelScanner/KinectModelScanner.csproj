@@ -45,6 +45,7 @@
     <Compile Include="Kinect.cs" />
     <Compile Include="MarkableVertex.cs" />
     <Compile Include="Model.cs" />
+    <Compile Include="ModelMapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
