@@ -31,12 +31,12 @@ namespace KinectModelScanner
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             _kinect = new Kinect();
-            _vertexCountInLine = 4;
-            _vertexStep = 1f;
-            _cameraPos = new Vector3(-10, 0, 0);
+            _vertexCountInLine = 20;
+            _vertexStep = 20f;
+            _cameraPos = new Vector3(-600, 0, 0);
             _cameraTarget = Vector3.Zero;
             _view = Matrix.CreateLookAt(_cameraPos, _cameraTarget, Vector3.Up);
-            _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4 / 2, Window.ClientBounds.Width / (float)Window.ClientBounds.Height, 1, 100);
+            _projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, Window.ClientBounds.Width / (float)Window.ClientBounds.Height, 1, 1500);
         }
 
         /// <summary>
@@ -83,18 +83,18 @@ namespace KinectModelScanner
         private void InitModel()
         { 
             _model = new Model(_vertexCountInLine, _vertexStep);
-            _model[1, 2, 1].Marked = _model[1, 2, 2].Marked =
-                _model[1, 1, 1].Marked = _model[1, 1, 2].Marked = _model[2, 2, 2].Marked = true;
         }
 
         private void SetTrianglesToDraw()
         {
             var triangles = new List<Vector3[]>();
+            var marchingCubes = new MarchingCubes();
             foreach (var cube in _model.GetCubes())
             {
-                triangles.AddRange(Model.GetTrianglesFromCube(cube));
+                triangles.AddRange(marchingCubes.MarchCube(cube));
             }
             int i = 0;
+            _toDraw.Clear();
             foreach (var t in triangles)
             {
                 foreach (var p in t)
@@ -123,12 +123,13 @@ namespace KinectModelScanner
             if(keyboardState.IsKeyDown(Keys.Left) && _oldKeyboardState.IsKeyUp(Keys.Left))
             {
                 _model.Rotate(right: false);
-                _modelMapper.Map();
-
             }
             else if(keyboardState.IsKeyDown(Keys.Right) && _oldKeyboardState.IsKeyUp(Keys.Right))
             {
                 _model.Rotate(right: true);
+            }
+            else if(keyboardState.IsKeyDown(Keys.S) && _oldKeyboardState.IsKeyUp(Keys.S))
+            {
                 _modelMapper.Map();
             }
             _oldKeyboardState = keyboardState;

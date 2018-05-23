@@ -36,7 +36,7 @@ namespace KinectModelScanner
 
         public Model(int vertexCountInLine, float step)
         {
-            float translation = (vertexCountInLine * step - 1) / 2f;
+            float translation = (vertexCountInLine * step - step) / 2f;
             Center = new Vector3(translation, translation, translation);
             var modelTranslation = -Center;
             Matrix.CreateTranslation(ref modelTranslation, out _translation);
@@ -69,13 +69,13 @@ namespace KinectModelScanner
                         cubes.Add(new MarkableVertex[8]
                         {
                             this[x, y, z],
-                            this[x + 1, y, z],
-                            this[x + 1, y, z + 1],
                             this[x, y, z + 1],
+                            this[x + 1, y, z + 1],
+                            this[x + 1, y, z],
                             this[x, y + 1, z],
-                            this[x + 1, y + 1, z],
+                            this[x, y + 1, z + 1],
                             this[x + 1, y + 1, z + 1],
-                            this[x, y + 1, z + 1]
+                            this[x + 1, y + 1, z]
                         });
                     }
                 }
