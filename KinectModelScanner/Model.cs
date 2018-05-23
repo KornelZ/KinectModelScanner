@@ -124,7 +124,7 @@ namespace KinectModelScanner
                 angle = -angle;
             }
             _currentRotation += angle;
-            if(_currentRotation == MathHelper.Pi * 2)
+            if(Math.Abs(_currentRotation) > MathHelper.Pi * 2)
             {
                 _currentRotation = 0;
             }
